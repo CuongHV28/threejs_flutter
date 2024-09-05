@@ -1,0 +1,140 @@
+<!-- assets/threejs/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js House</title>
+    <style>
+        .webgl {
+            margin-top: 0.3vh !important;
+            width: 100% !important; /* Set the width of the canvas */
+            height: 100% !important; /* Set the height of the canvas */
+            display: block; /* To remove any extra space below the canvas */
+            margin: auto; /* Center the canvas horizontally */
+            background: #eee; /* Optional: Background color of the canvas */
+        }
+    
+        .screenshot-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px;
+        }
+    
+        .screenshot-label {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+    
+        .gap-10px {
+            gap: 10px;
+        }
+    
+        .gap-5px {
+            gap: 5px;
+        }
+
+        .btn-viewside {
+            background: #F1F5FD !important;
+            color: #4676FB !important;
+            border-radius: 100px !important;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="three-container">
+        <div class="row align-items-center mb-4">
+            <div class="col-3">
+                <label>Số tầng nổi: </label>
+                <input class="form-control" id="numberOfGroundFloor" asp-for="SoTangNoi" type="number" />
+            </div>
+            <div class="col-3">
+                <label>Số tầng hầm: </label>
+                <input class="form-control" id="numberOfUndergroundFloor" asp-for="SoTangNgam" type="number" />
+            </div>
+            <div class="col-3 d-flex align-items-center gap-5px mt-4">
+                <input type="checkbox" class="small-checkbox" id="hasSemiBasement" asp-for="CoBanHam" />
+                <div>Có tầng bán hầm</div>
+            </div>
+        </div>
+        <div class="row align-items-center">
+            <div class="col-10">
+                <div class="col-md-12 mb-4">
+                    <label>Hình ảnh: </label>
+                    <canvas class="webgl"></canvas>
+                </div>
+                <div class="d-flex flex-column align-items-center gap-10px">
+                    <div class="row">
+                        <button type="button" class="mr-1 px-3 py-2 border-0 btn-viewside" id="btnViewFront" onclick="viewFront()">
+                            Mặt trước
+                        </button>
+                        <button type="button" class="mr-1 px-3 py-2 border-0 btn-viewside" id="btnViewLeft" onclick="viewLeftSide()">
+                            Mặt bên trái
+                        </button>
+                        <button type="button" class="mr-1 px-3 py-2 border-0 btn-viewside" id="btnViewBack" onclick="viewBack()">
+                            Mặt sau
+                        </button>
+                        <button type="button" class="mr-1 px-3 py-2 border-0 btn-viewside" id="btnViewRight" onclick="viewRightSide()">
+                            Mặt phải
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 d-flex flex-column gap-10px">
+                <button type="button" class="mr-1 px-3 py-2 border-0" id="btnPreview" style="background: #F1F5FD; color: #4676FB; border-radius: 5px"
+                        onclick="previewHouse()">
+                    Xem trước
+                </button>
+                <button type="button" class="mr-1 px-3 py-2 border-0" id="btnReset" style="background: #F1F5FD; color: #4676FB; border-radius: 5px"
+                        onclick="handleResetHouse()">
+                    Mẫu gốc
+                </button>
+                <button type="button" class="px-4 py-2 border-0 text-white" onclick="saveChanges()" style="background: #4676FB; border-radius: 5px">
+                    Cập nhật
+                </button>
+            </div>
+        </div>
+        <div id="screenshot-preview"></div>
+    </div>
+    <!-- Add other scripts and assets as needed -->
+    <!-- <script src="/assets/threejs-house/compiled/index.js"></script> -->
+    <script src="bundle.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        let houseSettings = {
+            "firstFloor":
+                {
+                    "FrontWallSettings":"LargeSideD1W1",
+                    "LeftWallSettings":"LargeSidePlain",
+                    "BackWallSettings":"LargeSidePlain",
+                    "RightWallSettings":"LargeSideW1",
+                    "StairSettings":"stairSettings"
+                },
+            "highFloors":
+                [
+                    {
+                        "FrontWallSettings":"LargeSideD2B",
+                        "LeftWallSettings":"LargeSidePlain",
+                        "BackWallSettings":"LargeSidePlain",
+                        "RightWallSettings":"LargeSideW1",
+                        "StairSettings":"stairSettings"
+                    },
+                    {
+                        "FrontWallSettings":"LargeSideD2B",
+                        "LeftWallSettings":"LargeSidePlain",
+                        "BackWallSettings":"LargeSidePlain",
+                        "RightWallSettings":"LargeSideW1",
+                        "StairSettings":"stairSettings"
+                    }
+                ],
+            "roof":"RoofBoxHasRailingsSideExits",
+            "wallMaterial":"wallMaterial3",
+            "isNhaCap4":false
+        }
+        addHouseString(houseSettings);
+    </script>
+</body>
+</html>

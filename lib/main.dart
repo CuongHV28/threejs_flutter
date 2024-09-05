@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -32,8 +34,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..setBackgroundColor(const Color(0x00000000))
-      ..loadRequest(Uri.parse(
-          'file:///android_asset/flutter_assets/assets/threejs-house/index.html'))
+      ..loadFlutterAsset('assets/threejs-house/index.html')
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
@@ -47,14 +48,52 @@ class _WebViewContainerState extends State<WebViewContainer> {
     // _loadHtmlFromAssets();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return WebViewWidget(controller: _controller);
+  void _showHouse() {
+    final houseSettings = {
+      "firstFloor": {
+        "FrontWallSettings": "LargeSideD1W1",
+        "LeftWallSettings": "LargeSidePlain",
+        "BackWallSettings": "LargeSidePlain",
+        "RightWallSettings": "LargeSideW1",
+        "StairSettings": "stairSettings"
+      },
+      "highFloors": [
+        {
+          "FrontWallSettings": "LargeSideD2B",
+          "LeftWallSettings": "LargeSidePlain",
+          "BackWallSettings": "LargeSidePlain",
+          "RightWallSettings": "LargeSideW1",
+          "StairSettings": "stairSettings"
+        },
+        {
+          "FrontWallSettings": "LargeSideD2B",
+          "LeftWallSettings": "LargeSidePlain",
+          "BackWallSettings": "LargeSidePlain",
+          "RightWallSettings": "LargeSideW1",
+          "StairSettings": "stairSettings"
+        }
+      ],
+      "roof": "RoofBoxHasRailingsSideExits",
+      "wallMaterial": "wallMaterial3",
+      "isNhaCap4": false
+    };
+
+    final jsonString = jsonEncode(houseSettings);
+    _controller.runJavaScript('window.showHouse($jsonString);');
   }
 
-  // Future<void> _loadHtmlFromAssets() async {
-  //   final htmlContent = await _controller
-  //       .loadRequest('file:///assets/threejs-house/files/index.html');
-  //   _controller.loadHtmlString(htmlContent);
-  // }
+  @override
+  Widget build(BuildContext context) {
+    // return WebViewWidget(controller: _controller);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Three.js House'),
+      ),
+      body: WebViewWidget(controller: _controller),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showHouse,
+        child: const Icon(Icons.house),
+      ),
+    );
+  }
 }

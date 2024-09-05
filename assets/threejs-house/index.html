@@ -104,37 +104,10 @@
     <script src="bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
-        let houseSettings = {
-            "firstFloor":
-                {
-                    "FrontWallSettings":"LargeSideD1W1",
-                    "LeftWallSettings":"LargeSidePlain",
-                    "BackWallSettings":"LargeSidePlain",
-                    "RightWallSettings":"LargeSideW1",
-                    "StairSettings":"stairSettings"
-                },
-            "highFloors":
-                [
-                    {
-                        "FrontWallSettings":"LargeSideD2B",
-                        "LeftWallSettings":"LargeSidePlain",
-                        "BackWallSettings":"LargeSidePlain",
-                        "RightWallSettings":"LargeSideW1",
-                        "StairSettings":"stairSettings"
-                    },
-                    {
-                        "FrontWallSettings":"LargeSideD2B",
-                        "LeftWallSettings":"LargeSidePlain",
-                        "BackWallSettings":"LargeSidePlain",
-                        "RightWallSettings":"LargeSideW1",
-                        "StairSettings":"stairSettings"
-                    }
-                ],
-            "roof":"RoofBoxHasRailingsSideExits",
-            "wallMaterial":"wallMaterial3",
-            "isNhaCap4":false
+        function showHouse(houseSettings) {
+            console.log('House settings received:', houseSettings);
+            addHouseString(houseSettings);
         }
-        addHouseString(houseSettings);
     </script>
 </body>
 </html>

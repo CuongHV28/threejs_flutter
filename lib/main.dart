@@ -28,6 +28,8 @@ class WebViewContainer extends StatefulWidget {
 class _WebViewContainerState extends State<WebViewContainer> {
   late final WebViewController _controller;
 
+  String? _retrievedHouseSettings;
+
   @override
   void initState() {
     super.initState();
@@ -82,17 +84,72 @@ class _WebViewContainerState extends State<WebViewContainer> {
     _controller.runJavaScript('window.showHouse($jsonString);');
   }
 
+  void _saveHouseSettings() async {
+    final result = await _controller
+        .runJavaScriptReturningResult('window.getHouseSettings();');
+    setState(() {
+      _retrievedHouseSettings = result as String;
+    });
+    print('House settings: $_retrievedHouseSettings');
+    // Navigator.of(context).pop(); // Close the WebView
+    // try {
+    //   final result = await _controller
+    //       .runJavaScriptReturningResult('window.getHouseSettings();');
+    //   setState(() {
+    //     _retrievedHouseSettings = result as String;
+    //   });
+    //   print('House settings: $_retrievedHouseSettings');
+    //   Navigator.of(context).pop(); // Close the WebView
+    // } catch (e) {
+    //   print('Error retrieving house settings: $e');
+    // }
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   // return WebViewWidget(controller: _controller);
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: const Text('Three.js House'),
+  //     ),
+  //     body: WebViewWidget(controller: _controller),
+  //     floatingActionButton: FloatingActionButton(
+  //       onPressed: _showHouse,
+  //       child: const Icon(Icons.house),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    // return WebViewWidget(controller: _controller);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Three.js House'),
+        title: Text('Three.js House'),
       ),
-      body: WebViewWidget(controller: _controller),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showHouse,
-        child: const Icon(Icons.house),
+      body: Column(
+        children: [
+          Expanded(
+            child: WebViewWidget(controller: _controller),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: _showHouse,
+                child: Text('Show House'),
+              ),
+              ElevatedButton(
+                onPressed: _saveHouseSettings,
+                child: Text('Save'),
+              ),
+            ],
+          ),
+          if (_retrievedHouseSettings != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('House Settings: $_retrievedHouseSettings'),
+            ),
+        ],
       ),
     );
   }

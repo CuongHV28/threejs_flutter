@@ -104,9 +104,17 @@
     <script src="bundle.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
+        let currentHouseSettings = {};
         function showHouse(houseSettings) {
-            console.log('House settings received:', houseSettings);
+            currentHouseSettings = houseSettings;
+            console.log('House settings received:', currentHouseSettings);
             addHouseString(houseSettings);
+
+        }
+
+        
+        function getHouseSettings() {
+            return JSON.stringify(currentHouseSettings);
         }
     </script>
 </body>

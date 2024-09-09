@@ -35,8 +35,9 @@ class _WebViewContainerState extends State<WebViewContainer> {
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(const Color(0x00000000))
+      // ..setBackgroundColor(const Color(0x00000000))
       ..loadFlutterAsset('assets/threejs-house/index.html')
+      // ..loadRequest(Uri.parse('http://10.0.2.2:3070'))
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
